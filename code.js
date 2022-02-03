@@ -15,27 +15,30 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('messageCreate', (msg) => {
-  if (msg.content === '!ping') {
-    msg.reply('pong');
-  }
-});
-
-
 client.on('presenceUpdate', (oldMember, newMember) => {
-  console.dir(oldMember)
-  if(newMember){
-    var game = newMember.activities[0].name;
-  
-    console.dir(newMember);
-  
-    if(game.includes('Spotify')) { 
-      var user = newMember.username;
-      var guild = newMember.guild;
-      var channel = guild.channels.cache.find(ch => ch.name === 'bot-testing');
-      channel.send(`${user} is listening to ${game}`);
-    } 
+
+  if(newMember.activities.length === 0) return; 
+
+  console.log(newMember);
+
+  var game = newMember.activities[0].name;
+  game = game.toLowerCase();
+
+  if(game.includes('bloons')) {
+    setInterval(() => {
+      game = newMember.activities[0].name;
+      game = game.toLowerCase();
+      if(game.includes('bloons')) {
+        var user = client.users.cache.get(newMember.userId);
+        var guild = newMember.guild;
+        var channel = guild.channels.cache.find(ch => ch.name === 'bot-testing');
+        channel.send(`${user} has been playing Bloons for over an hour! Touch some grass! :RIPBOZO: :pepeLaughPoint: `)
+      } else {
+        return;
+      }
+    }, 3600000);
   }
+
 });
 
 
