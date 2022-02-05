@@ -1,7 +1,7 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const { Client, Intents, Message } = require('discord.js');
+const { Client, Intents, Message, MessageEmbed } = require('discord.js');
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -17,16 +17,16 @@ client.on('ready', () => {
 
 client.on('presenceUpdate', (oldMember, newMember) => {
 
-  if(newMember.activities.length === 0) return; 
+  if (newMember.activities.length === 0) return;
 
   var game = newMember.activities[0].name;
   game = game.toLowerCase();
 
-  if(game.includes('league of legends')) {
+  if (game.includes('league of legends')) {
     setInterval(() => {
       game = newMember.activities[0].name;
       game = game.toLowerCase();
-      if(game.includes('league of legends')) {
+      if (game.includes('league of legends')) {
         var user = client.users.cache.get(newMember.userId);
         var guild = newMember.guild;
         var channel = guild.channels.cache.find(ch => ch.name === 'general');
@@ -40,47 +40,49 @@ client.on('presenceUpdate', (oldMember, newMember) => {
 });
 
 
-
-
-
-
 client.on('messageCreate', msg => {
   var msgStr = msg.content.toLowerCase();
   var user = client.users.cache.get(msg.author.id);
 
-  switch(msgStr) {
+  switch (msgStr) {
     case '!ping':
       msg.channel.send(`${user} Pong!`);
       break;
     case '!roulette':
       var roll = Math.floor(Math.random() * 5) + 1;
-      setTimeout(() => {
-        msg.channel.send(`${user} you stand up against the wall, you take one final deep breath...`);
-      }, 4000);
-      setTimeout(() => {
-        msg.channel.send(`Nick chambers his round into his gun. Mutters under his breath, "I never thought I'd be so lucky."`);
-      }, 2000);
-      
-      //User wins a free kick
-      if(roll === 1) {
-        setTimeout(() => {
-          msg.channel.send(`BANG! The shot strikes you in the back. You fall to the ground, get out of this server`);
-        }, 3000);
+      if (roll == 1) {
+        const embed = new MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle('Roulette winner')
+          .setDescription(`You stand up against the wall, you take one final deep breath. BANG! The bullet strikes you in the back, you fall to the ground. Your vision blurs and your consciousness fades.`)
+          .setImage('https://i.imgur.com/YSjRdAt.gif')
+          .setTimestamp();
 
-        msg.guild.fetchMember(msg.author.id).then(member => {
-          member.kick('Luck was not on your side today. https://discord.gg/jcX5hwFJbk').then(m => {
-            msg.channel.send(`${user} soul has been offered to the god's.`);
-          });
-        });
-      } else {
-      //User loses
+
+        msg.channel.send({ embeds: [embed] });
+
         setTimeout(() => {
-          msg.channel.send(`THUD! The shot strikes to the right of you. You live to see another day.`);
-        }, 3000);
+          const kickEmbed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Winner winner chicken dinner.')
+            .setDescription(`Luck was (not) on your side today. \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`)
+            .setTimestamp();
+
+          msg.member.kick(kickEmbed);
+        }, 4000);
+
+      } else {
+        const embed = new MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle('Roulette loser')
+          .setDescription(`You stand up against the wall, you take one final deep breath. THUD! The bullet strikes to your right. You live to see another day.`)
+          .setTimestamp();
+
+        msg.channel.send({ embeds: [embed] });
       }
       break;
   }
-  
+
 
 });
 
