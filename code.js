@@ -11,6 +11,8 @@ const client = new Client({
   ]
 });
 
+const version = "1.0.0";
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -37,6 +39,21 @@ client.on('presenceUpdate', (oldMember, newMember) => {
     }, 3600000);
   }
 
+  if (game.includes('vr chat')) {
+    setInterval(() => {
+      game = newMember.activities[0].name;
+      game = game.toLowerCase();
+      if (game.includes('league of legends')) {
+        var user = client.users.cache.get(newMember.userId);
+        var guild = newMember.guild;
+        var channel = guild.channels.cache.find(ch => ch.name === 'general');
+        channel.send(`${user} has been playing VR Chat for over an hour! Touch some grass! :joy: :joy: :joy:`)
+      } else {
+        return;
+      }
+    }, 3600000);
+  }
+
 });
 
 
@@ -53,7 +70,7 @@ client.on('messageCreate', msg => {
       if (roll == 1) {
         const embed = new MessageEmbed()
           .setColor('#0099ff')
-          .setTitle('Roulette winner')
+          .setTitle('Roulette loser')
           .setDescription(`You stand up against the wall, you take one final deep breath. BANG! The bullet strikes you in the back, you fall to the ground. Your vision blurs and your consciousness fades.`)
           .setImage('https://i.imgur.com/YSjRdAt.gif')
           .setTimestamp();
@@ -74,12 +91,15 @@ client.on('messageCreate', msg => {
       } else {
         const embed = new MessageEmbed()
           .setColor('#0099ff')
-          .setTitle('Roulette loser')
+          .setTitle('Roulette winner')
           .setDescription(`You stand up against the wall, you take one final deep breath. THUD! The bullet strikes to your right. You live to see another day.`)
           .setTimestamp();
 
         msg.channel.send({ embeds: [embed] });
       }
+      break;
+    case '!version':
+      msg.channel.send(`${user} version ${version}`);
       break;
   }
 
