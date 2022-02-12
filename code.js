@@ -15,6 +15,7 @@ const version = "1.0.0";
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Version: ${version}`);
 });
 
 client.on('presenceUpdate', (oldMember, newMember) => {
@@ -32,7 +33,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
         var user = client.users.cache.get(newMember.userId);
         var guild = newMember.guild;
         var channel = guild.channels.cache.find(ch => ch.name === 'general');
-        channel.send(`${user} has been playing League of Legends for over an hour! Touch some grass! :joy: :joy: :joy:`)
+        channel.send(`${user} has been playing League of Legends for over an hour! Touch some grass! :joy: :joy: :joy:`);
       } else {
         return;
       }
@@ -43,11 +44,12 @@ client.on('presenceUpdate', (oldMember, newMember) => {
     setInterval(() => {
       game = newMember.activities[0].name;
       game = game.toLowerCase();
-      if (game.includes('league of legends')) {
+      if (game.includes('vr chat')) {
         var user = client.users.cache.get(newMember.userId);
         var guild = newMember.guild;
         var channel = guild.channels.cache.find(ch => ch.name === 'general');
-        channel.send(`${user} has been playing VR Chat for over an hour! Touch some grass! :joy: :joy: :joy:`)
+        channel.send(`${user} has been playing VR Chat for over an hour! Touch some grass! :joy: :joy: :joy:`);
+
       } else {
         return;
       }
