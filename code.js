@@ -11,49 +11,39 @@ const client = new Client({
   ]
 });
 
-const version = "1.0.1";
+const version = "1.1.0";
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Version: ${version}`);
 });
 
+
 client.on('presenceUpdate', (oldMember, newMember) => {
 
   if (newMember.activities.length === 0) return;
 
-  var game = newMember.activities[0].name;
-  game = game.toLowerCase();
+  catchGame('League of Legends', newMember);
+  catchGame('VR Chat', newMember);
 
-  if (game.includes('league of legends')) {
-    setInterval(() => {
-      game = newMember.activities[0].name;
-      game = game.toLowerCase();
-      if (game.includes('league of legends')) {
-        var user = client.users.cache.get(newMember.userId);
-        var guild = newMember.guild;
-        var channel = guild.channels.cache.find(ch => ch.name === 'general');
-        channel.send(`${user} has been playing League of Legends for over an hour! Touch some grass! :joy: :joy: :joy:`);
-      } else {
-        return;
-      }
-    }, 3600000);
-  }
+  function catchGame(gameName, newMember) {
+    var game = newMember.activities[0].name;
+    game = game.toLowerCase();
 
-  if (game.includes('vr chat')) {
-    setInterval(() => {
-      game = newMember.activities[0].name;
-      game = game.toLowerCase();
-      if (game.includes('vr chat')) {
-        var user = client.users.cache.get(newMember.userId);
-        var guild = newMember.guild;
-        var channel = guild.channels.cache.find(ch => ch.name === 'general');
-        channel.send(`${user} has been playing VR Chat for over an hour! Touch some grass! :joy: :joy: :joy:`);
+    if (game.includes(gameName)) {
+      var user = client.users.cache.get(newMember.userId);
+      console.warn(`${user} is playing ${gameName}`);
 
-      } else {
-        return;
-      }
-    }, 3600000);
+      setInterval(() => {
+        if (game.includes(gameName.toLowerCase())) {
+          var guild = newMember.guild;
+          var channel = guild.channels.cache.find(ch => ch.name === 'general');
+          channel.send(`${user} has been playing ${gameName} for over an hour! Touch some grass! :joy: :joy: :joy:`);
+        } else {
+          return;
+        }
+      }, 3600000);
+    }
   }
 
 });
@@ -62,6 +52,11 @@ client.on('presenceUpdate', (oldMember, newMember) => {
 client.on('messageCreate', msg => {
   var msgStr = msg.content.toLowerCase();
   var user = client.users.cache.get(msg.author.id);
+
+  //Check if the first letter of msgStr is '!'
+  if (msgStr.charAt(0) === '!') {
+    console.log(`Heard ${user}'s command: ${msgStr}`);
+  }
 
   switch (msgStr) {
     case '!ping':
