@@ -52,10 +52,11 @@ client.on('presenceUpdate', (oldMember, newMember) => {
 client.on('messageCreate', msg => {
   var msgStr = msg.content.toLowerCase();
   var user = client.users.cache.get(msg.author.id);
+  var userName = user.username;
 
   //Check if the first letter of msgStr is '!'
   if (msgStr.charAt(0) === '!') {
-    console.log(`Heard ${user}'s command: ${msgStr}`);
+    console.log(`Heard ${userName}'s command: ${msgStr}`);
   }
 
   switch (msgStr) {
