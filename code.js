@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.0.0";
+const version = "1.0.1";
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
