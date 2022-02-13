@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.2.0";
+const version = "1.2.1";
 const prefix = '!';
 
 client.on('ready', () => {
@@ -62,16 +62,16 @@ client.on('messageCreate', msg => {
   console.log(`${userName} used the command ${cmd}`);
 
   switch (cmd) {
-    case '!ping':
+    case 'ping':
       msg.channel.send(`${user} Pong!`);
       break;
-    case '!roulette':
+    case 'roulette':
       rouletteFun(msg);
       break;
-    case '!version':
+    case 'version':
       msg.channel.send(`${user} version ${version}`);
       break;
-    case '!hitme':
+    case 'hitme':
       mathDungeon(args, user, msg);
       break;
   }
