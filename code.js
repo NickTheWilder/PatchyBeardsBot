@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.2.2";
+const version = "1.2.9";
 const prefix = '!';
 
 client.on('ready', () => {
@@ -25,7 +25,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
   if (newMember.activities.length === 0) return;
 
   catchGame('League of Legends', newMember);
-  catchGame('VR Chat', newMember);
+  catchGame('VRChat', newMember);
 
   function catchGame(gameName, newMember) {
     var game = newMember.activities[0].name;
@@ -114,7 +114,7 @@ function rouletteFun(msg) {
   return;
 }
 
-function mathDungeon(args, user, msg) {
+async function mathDungeon(args, user, msg) {
   var difficulty = args[1];
   if (!difficulty) {
     msg.channel.send(`${user} missing arguments, please use !hitme <1-5>`);
@@ -130,48 +130,43 @@ function mathDungeon(args, user, msg) {
     return;
   }
 
-
-
-  let ans = false;
-
-  msg.channel.send(`${user} has entered the math dungeon! You have 10 seconds to answer the following question:`);
-
   switch (difficulty) {
     case '1':
-
-      var roll = Math.floor(Math.random() * 10) + 1;
+      //var roll = Math.floor(Math.random() * 5) + 1;
+      var roll = 1;
       switch (roll) {
         case 1:
           const embed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Math Dungeon')
             .setDescription(`What is the sum of 1 + 1?
-            \n :a: 2
-            \n :b: 3
-            \n :c: 4
-            \n :d: 5`)
+            \n 🔴 2
+            \n 🔵 3
+            \n 🟡 4
+            \n 🟢 5`)
             .setTimestamp();
 
-          msg.channel.send({ embeds: [embed] });
-          msg.react(':a:');
-          msg.react(':b:');
-          msg.react(':c:');
-          msg.react(':d:');
+          const embedMsg = await msg.channel.send({ embeds: [embed] });
 
-          msg.awaitReactions({ filter, max: 1, time: 1000, errors: ['time'] })
+          embedMsg.react('🔴');
+          embedMsg.react('🔵');
+          embedMsg.react('🟡');
+          embedMsg.react('🟢');
+
+          const filter = (reaction, user) => {
+            return ['🔴', '🔵', '🟡', '🟢'].includes(reaction.emoji.name) && user.id === msg.author.id;
+          };
+
+          embedMsg.awaitReactions({ filter, max: 1, time: 10000, errors: ['time'] })
             .then(collected => {
               const reaction = collected.first();
-              if (reaction.emoji.name === ':a:') {
+              if (reaction.emoji.name === '🔴') {
                 msg.channel.send(`${user} got it right!`);
-                ans = true;
               } else {
                 msg.channel.send(`${user} got it wrong!`);
-                ans = false;
               }
-            })
-            .catch(collected => {
+            }).catch(() => {
               msg.channel.send(`${user} took too long to answer!`);
-              ans = false;
             });
 
           if (ans = false) {
@@ -185,6 +180,44 @@ function mathDungeon(args, user, msg) {
     case '3':
       break;
     case '4':
+      //var roll = Math.floor(Math.random() * 5) + 1;'
+      var roll = 1;
+      switch (roll) {
+        case 1:
+          const embed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Math Dungeon')
+            .setDescription(`Find the maximum and minimum value of the function f(x,y)=x^2+y^2-3^y on the closed disk x^2+y^2 ≤ 4.
+            \n 🔴 1
+            \n 🔵 -1.5
+            \n 🟡 -2.25
+            \n 🟢 -2.5`)
+            .setTimestamp();
+
+          const embedMsg = await msg.channel.send({ embeds: [embed] });
+
+          embedMsg.react('🔴');
+          embedMsg.react('🔵');
+          embedMsg.react('🟡');
+          embedMsg.react('🟢');
+
+          const filter = (reaction, user) => {
+            return ['🔴', '🔵', '🟡', '🟢'].includes(reaction.emoji.name) && user.id === msg.author.id;
+          };
+
+          embedMsg.awaitReactions({ filter, max: 1, time: 3600000, errors: ['time'] })
+            .then(collected => {
+              const reaction = collected.first();
+              if (reaction.emoji.name === '🟡') {
+                msg.channel.send(`${user} got it right!`);
+              } else {
+                msg.channel.send(`${user} got it wrong!`);
+              }
+            }).catch(() => {
+              msg.channel.send(`${user} took too long to answer!`);
+            });
+          break;
+      }
       break;
     case '5':
       break;
