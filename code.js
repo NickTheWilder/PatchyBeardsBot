@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.2.1";
+const version = "1.2.2";
 const prefix = '!';
 
 client.on('ready', () => {
@@ -120,12 +120,19 @@ function mathDungeon(args, user, msg) {
     msg.channel.send(`${user} missing arguments, please use !hitme <1-5>`);
     return;
   }
+  if (isNaN(difficulty)) {
+    msg.channel.send(`${user} difficulty must be a number`);
+    return;
+  }
+
   if (difficulty > 5 || difficulty < 1) {
     msg.channel.send(`${user} difficulty must be between 1 and 5`);
     return;
   }
 
-  var ans = false;
+
+
+  let ans = false;
 
   msg.channel.send(`${user} has entered the math dungeon! You have 10 seconds to answer the following question:`);
 
