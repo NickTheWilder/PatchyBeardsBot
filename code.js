@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.3.1";
+const version = "1.3.3";
 const prefix = '!';
 
 client.on('ready', () => {
@@ -100,7 +100,7 @@ function rouletteFun(msg) {
         .setTimestamp();
 
       msg.member.kick(kickEmbed);
-    }, 4000);
+    }, 5000);
 
   } else {
     const embed = new MessageEmbed()
@@ -147,7 +147,7 @@ async function mathDungeon(args, user, msg) {
             \n 🟢 5`)
             .setTimestamp();
 
-            ans = embedHelper(embed, msg, user, '🔴');
+            ans = await embedHelper(embed, msg, user, '🔴');
           break;
           case '2':
             embed.setColor('#0099ff')
@@ -159,8 +159,8 @@ async function mathDungeon(args, user, msg) {
               \n 🟢 284`)
               .setTimestamp();
 
-              ans = embedHelper(embed, msg, user, '🔵');
-            break;
+              ans = await embedHelper(embed, msg, user, '🔵');
+          break;
           case '3':
             embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
@@ -171,8 +171,8 @@ async function mathDungeon(args, user, msg) {
               \n 🟢 15`)
               .setTimestamp();
 
-              ans = embedHelper(embed, msg, user, '🔴');
-            break;
+              ans = await embedHelper(embed, msg, user, '🔴');
+          break;
           case '4':
             embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
@@ -183,8 +183,8 @@ async function mathDungeon(args, user, msg) {
               \n 🟢 80`)
               .setTimestamp();
 
-              ans = embedHelper(embed, msg, user, '🔵');
-            break;
+              ans = await embedHelper(embed, msg, user, '🔵');
+          break;
           case '5':
             embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
@@ -195,12 +195,38 @@ async function mathDungeon(args, user, msg) {
               \n 🟢 42`)
               .setTimestamp();
 
-              ans = embedHelper(embed, msg, user, '🔴');
-            break;
+              ans = await embedHelper(embed, msg, user, '🔴');
+          break;
       }
       break;
     case '2':
-      break;
+      var roll = Math.floor(Math.random() * 5) + 1;
+      switch (roll) {
+        case 1:
+          embed.setColor('#0099ff')
+            .setTitle('Math Dungeon')
+            .setDescription(`What is the sum of 9 * 32 / 6 / 3?
+            \n 🔴 12
+            \n 🔵 8
+            \n 🟡 4
+            \n 🟢 16`)
+            .setTimestamp();
+
+            ans = await embedHelper(embed, msg, user, '🟢');
+          break;
+        case '2':
+          embed.setColor('#0099ff')
+            .setTitle('Math Dungeon')
+            .setDescription(`What is the sum of 9 * 32 / 6 / 3?
+            \n 🔴 12
+            \n 🔵 8
+            \n 🟡 4
+            \n 🟢 16`)
+            .setTimestamp();
+
+            ans = await embedHelper(embed, msg, user, '🟢');
+        break;
+      }
     case '3':
       break;
     case '4':
@@ -224,9 +250,16 @@ async function mathDungeon(args, user, msg) {
     case '5':
       break;
   }
+
+  if (!ans) {
+    setTimeout(() => {
+      msg.member.kick(`Better luck next time, ${user}`);
+    }, 5000);
+  }
+  return
 }
 
-function embedHelper(embed, msg, user, ans) {
+async function embedHelper(embed, msg, user, ans) {
 
   const embedMsg = await msg.channel.send({ embeds: [embed] });
             
@@ -247,10 +280,12 @@ function embedHelper(embed, msg, user, ans) {
       return true;
     } else {
       msg.channel.send(`${user} got it wrong!`);
+      msg.channel.send(`https://media.tenor.co/videos/6303c6987119019caaf39b7f0b33028a/mp4`);
       return false;
     }
   }).catch(() => {
     msg.channel.send(`${user} took too long to answer!`);
+    msg.channel.send(`https://media.tenor.co/videos/6303c6987119019caaf39b7f0b33028a/mp4`);
     return false;
   });
 
