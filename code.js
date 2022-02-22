@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-const version = "1.3.0";
+const version = "1.3.1";
 const prefix = '!';
 
 client.on('ready', () => {
@@ -117,6 +117,7 @@ function rouletteFun(msg) {
 async function mathDungeon(args, user, msg) {
   var difficulty = args[1];
   var ans = false;
+  const embed = new MessageEmbed();
 
   if (!difficulty) {
     msg.channel.send(`${user} missing arguments, please use !hitme <1-5>`);
@@ -137,8 +138,7 @@ async function mathDungeon(args, user, msg) {
       var roll = Math.floor(Math.random() * 5) + 1;
       switch (roll) {
         case 1:
-          const embed = new MessageEmbed()
-            .setColor('#0099ff')
+          embed.setColor('#0099ff')
             .setTitle('Math Dungeon')
             .setDescription(`What is the sum of 1 + 1?
             \n 🔴 2
@@ -150,8 +150,7 @@ async function mathDungeon(args, user, msg) {
             ans = embedHelper(embed, msg, user, '🔴');
           break;
           case '2':
-            const embed = new MessageEmbed()
-              .setColor('#0099ff')
+            embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
               .setDescription(`What is the sum of 57 * 3?
               \n 🔴 57
@@ -163,8 +162,7 @@ async function mathDungeon(args, user, msg) {
               ans = embedHelper(embed, msg, user, '🔵');
             break;
           case '3':
-            const embed = new MessageEmbed()
-              .setColor('#0099ff')
+            embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
               .setDescription(`What is the sum of 5 + 5?
               \n 🔴 10
@@ -176,8 +174,7 @@ async function mathDungeon(args, user, msg) {
               ans = embedHelper(embed, msg, user, '🔴');
             break;
           case '4':
-            const embed = new MessageEmbed()
-              .setColor('#0099ff')
+            embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
               .setDescription(`What is the sum of 16 * 4?
               \n 🔴 54
@@ -189,8 +186,7 @@ async function mathDungeon(args, user, msg) {
               ans = embedHelper(embed, msg, user, '🔵');
             break;
           case '5':
-            const embed = new MessageEmbed()
-              .setColor('#0099ff')
+            embed.setColor('#0099ff')
               .setTitle('Math Dungeon')
               .setDescription(`What is the sum of 7 + 7?
               \n 🔴 14
@@ -212,8 +208,7 @@ async function mathDungeon(args, user, msg) {
       var roll = 1;
       switch (roll) {
         case 1:
-          const embed = new MessageEmbed()
-            .setColor('#0099ff')
+          embed.setColor('#0099ff')
             .setTitle('Math Dungeon')
             .setDescription(`Find the maximum and minimum value of the function f(x,y)=x^2+y^2-3^y on the closed disk x^2+y^2 ≤ 4.
             \n 🔴 1
@@ -222,6 +217,7 @@ async function mathDungeon(args, user, msg) {
             \n 🟢 -2.5`)
             .setTimestamp();
 
+            ans = embedHelper(embed, msg, user, '🟡');
           break;
       }
       break;
