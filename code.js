@@ -116,6 +116,8 @@ function rouletteFun(msg) {
 
 async function mathDungeon(args, user, msg) {
   var difficulty = args[1];
+  var ans = false;
+
   if (!difficulty) {
     msg.channel.send(`${user} missing arguments, please use !hitme <1-5>`);
     return;
@@ -132,8 +134,7 @@ async function mathDungeon(args, user, msg) {
 
   switch (difficulty) {
     case '1':
-      //var roll = Math.floor(Math.random() * 5) + 1;
-      var roll = 1;
+      var roll = Math.floor(Math.random() * 5) + 1;
       switch (roll) {
         case 1:
           const embed = new MessageEmbed()
@@ -146,33 +147,60 @@ async function mathDungeon(args, user, msg) {
             \n 🟢 5`)
             .setTimestamp();
 
-          const embedMsg = await msg.channel.send({ embeds: [embed] });
-
-          embedMsg.react('🔴');
-          embedMsg.react('🔵');
-          embedMsg.react('🟡');
-          embedMsg.react('🟢');
-
-          const filter = (reaction, user) => {
-            return ['🔴', '🔵', '🟡', '🟢'].includes(reaction.emoji.name) && user.id === msg.author.id;
-          };
-
-          embedMsg.awaitReactions({ filter, max: 1, time: 10000, errors: ['time'] })
-            .then(collected => {
-              const reaction = collected.first();
-              if (reaction.emoji.name === '🔴') {
-                msg.channel.send(`${user} got it right!`);
-              } else {
-                msg.channel.send(`${user} got it wrong!`);
-              }
-            }).catch(() => {
-              msg.channel.send(`${user} took too long to answer!`);
-            });
-
-          if (ans = false) {
-            msg.channel.send(`${user} has failed the math dungeon!`);
-          }
+            ans = embedHelper(embed, msg, user, '🔴');
           break;
+          case '2':
+            const embed = new MessageEmbed()
+              .setColor('#0099ff')
+              .setTitle('Math Dungeon')
+              .setDescription(`What is the sum of 57 * 3?
+              \n 🔴 57
+              \n 🔵 171
+              \n 🟡 164
+              \n 🟢 284`)
+              .setTimestamp();
+
+              ans = embedHelper(embed, msg, user, '🔵');
+            break;
+          case '3':
+            const embed = new MessageEmbed()
+              .setColor('#0099ff')
+              .setTitle('Math Dungeon')
+              .setDescription(`What is the sum of 5 + 5?
+              \n 🔴 10
+              \n 🔵 6
+              \n 🟡 11
+              \n 🟢 15`)
+              .setTimestamp();
+
+              ans = embedHelper(embed, msg, user, '🔴');
+            break;
+          case '4':
+            const embed = new MessageEmbed()
+              .setColor('#0099ff')
+              .setTitle('Math Dungeon')
+              .setDescription(`What is the sum of 16 * 4?
+              \n 🔴 54
+              \n 🔵 64
+              \n 🟡 68
+              \n 🟢 80`)
+              .setTimestamp();
+
+              ans = embedHelper(embed, msg, user, '🔵');
+            break;
+          case '5':
+            const embed = new MessageEmbed()
+              .setColor('#0099ff')
+              .setTitle('Math Dungeon')
+              .setDescription(`What is the sum of 7 + 7?
+              \n 🔴 14
+              \n 🔵 15
+              \n 🟡 31
+              \n 🟢 42`)
+              .setTimestamp();
+
+              ans = embedHelper(embed, msg, user, '🔴');
+            break;
       }
       break;
     case '2':
@@ -194,34 +222,42 @@ async function mathDungeon(args, user, msg) {
             \n 🟢 -2.5`)
             .setTimestamp();
 
-          const embedMsg = await msg.channel.send({ embeds: [embed] });
-
-          embedMsg.react('🔴');
-          embedMsg.react('🔵');
-          embedMsg.react('🟡');
-          embedMsg.react('🟢');
-
-          const filter = (reaction, user) => {
-            return ['🔴', '🔵', '🟡', '🟢'].includes(reaction.emoji.name) && user.id === msg.author.id;
-          };
-
-          embedMsg.awaitReactions({ filter, max: 1, time: 3600000, errors: ['time'] })
-            .then(collected => {
-              const reaction = collected.first();
-              if (reaction.emoji.name === '🟡') {
-                msg.channel.send(`${user} got it right!`);
-              } else {
-                msg.channel.send(`${user} got it wrong!`);
-              }
-            }).catch(() => {
-              msg.channel.send(`${user} took too long to answer!`);
-            });
           break;
       }
       break;
     case '5':
       break;
   }
+}
+
+function embedHelper(embed, msg, user, ans) {
+
+  const embedMsg = await msg.channel.send({ embeds: [embed] });
+            
+  embedMsg.react('🔴');
+  embedMsg.react('🔵');
+  embedMsg.react('🟡');
+  embedMsg.react('🟢');
+
+  const filter = (reaction, user) => {
+    return ['🔴', '🔵', '🟡', '🟢'].includes(reaction.emoji.name) && user.id === msg.author.id;
+  }
+
+  embedMsg.awaitReactions({ filter, max: 1, time: 3600000, errors: ['time'] })
+  .then(collected => {
+    const reaction = collected.first();
+    if (reaction.emoji.name === ans) {
+      msg.channel.send(`${user} got it right!`);
+      return true;
+    } else {
+      msg.channel.send(`${user} got it wrong!`);
+      return false;
+    }
+  }).catch(() => {
+    msg.channel.send(`${user} took too long to answer!`);
+    return false;
+  });
+
 }
 
 
