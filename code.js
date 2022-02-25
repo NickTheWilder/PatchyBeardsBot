@@ -39,7 +39,9 @@ client.on('presenceUpdate', (oldMember, newMember) => {
         if (game.includes(gameName.toLowerCase())) {
           var guild = newMember.guild;
           var channel = guild.channels.cache.find(ch => ch.name === 'general');
-          channel.send(`${user} has been playing ${gameName} for over an hour! Touch some grass! :joy: :joy: :joy:`);
+          channel.send(`${user} has been playing ${gameName} for over an hour!`);
+
+          user.kick(`Quit playing ${gameName}! \n You can rejoin this server at this link once you have made better choices: https://discord.gg/jcX5hwFJbk`);
         } else {
           return;
         }
@@ -93,13 +95,7 @@ function rouletteFun(msg) {
     msg.channel.send({ embeds: [embed] });
 
     setTimeout(() => {
-      const kickEmbed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('Winner winner chicken dinner.')
-        .setDescription(`Luck was (not) on your side today. \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`)
-        .setTimestamp();
-
-      msg.member.kick(kickEmbed);
+      msg.member.kick(`Luck was (not) on your side today. \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`);
     }, 5000);
 
   } else {
@@ -228,6 +224,22 @@ async function mathDungeon(args, user, msg) {
         break;
       }
     case '3':
+      //var roll = Math.floor(Math.random() * 5) + 1;
+      var roll = 1;
+      switch (roll) {
+        case 1:
+          embed.setColor('#0099ff')
+            .setTitle('Math Dungeon')
+            .setDescription(`A circle has a radius of 13ft. Find the radian measure of the central angle theta that intercepts an arc of length 12ft.
+            \n 🔴 theta = 0.75 radians
+            \n 🔵 theta = 0.5 radians
+            \n 🟡 theta = 0.7 radians
+            \n 🟢 theta = 0.9 radians`)
+            .setTimestamp();
+
+            ans = await embedHelper(embed, msg, user, '🟢');
+            break;
+      }
       break;
     case '4':
       //var roll = Math.floor(Math.random() * 5) + 1;'
@@ -248,12 +260,29 @@ async function mathDungeon(args, user, msg) {
       }
       break;
     case '5':
+      //var roll = Math.floor(Math.random() * 5) + 1;
+      var roll = 1;
+      switch (roll) {
+        case 1:
+          embed.setColor('#0099ff')
+            .setTitle('Math Dungeon')
+            .setDescription(`When A is similar to B = (M^(-1))AM, prove this statement: \n
+            If A^k -> 0 when k -> infinity, then also B^k -> 0.
+            \n 🔴 A and B have the same eigenvalues. If A^k -> 0 then all |lambda| < 1. Therefore B^k -> 0.
+            \n 🔵 A and B are equivalent. If A^k -> 0 then all |lambda| > 1. Therefore B^k -> infinity.
+            \n 🟡 A and B are scalar multiples of the matrix AB. If A^k -> infinity then all |lambda| > 1. Therefore B^k -> -infinity.
+            \n 🟢 Just end me.`)
+            .setTimestamp();
+
+            ans = embedHelper(embed, msg, user, '🔴');
+        break;
+      }
       break;
   }
 
   if (!ans) {
     setTimeout(() => {
-      msg.member.kick(`Better luck next time, ${user}`);
+      msg.member.kick(`Better luck next time, ${user} \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`);
     }, 5000);
   }
   return
@@ -280,12 +309,12 @@ async function embedHelper(embed, msg, user, ans) {
       return true;
     } else {
       msg.channel.send(`${user} got it wrong!`);
-      msg.channel.send(`https://media.tenor.co/videos/6303c6987119019caaf39b7f0b33028a/mp4`);
+      msg.channel.send(`https://tenor.com/view/cry-sad-toy-story-woody-so-long-partner-gif-9797730`);
       return false;
     }
   }).catch(() => {
     msg.channel.send(`${user} took too long to answer!`);
-    msg.channel.send(`https://media.tenor.co/videos/6303c6987119019caaf39b7f0b33028a/mp4`);
+    msg.channel.send(`https://tenor.com/view/cry-sad-toy-story-woody-so-long-partner-gif-97977304`);
     return false;
   });
 
