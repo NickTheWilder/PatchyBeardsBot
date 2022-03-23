@@ -41,7 +41,7 @@ client.on('presenceUpdate', (oldMember, newMember) => {
 					var channel = guild.channels.cache.find(ch => ch.name === 'general');
 					channel.send(`${user} has been playing ${gameName} for over an hour!`);
 
-					user.kick(`Quit playing ${gameName}! \n You can rejoin this server at this link once you have made better choices: https://discord.gg/jcX5hwFJbk`);
+					user.kick(`Quit playing ${gameName}! \n You can rejoin this server at this link once you have made better choices: ${process.env.INV_LINK}`);
 				} else {
 					return;
 				}
@@ -95,7 +95,7 @@ function rouletteFun(msg) {
 		msg.channel.send({ embeds: [embed] });
 
 		setTimeout(() => {
-			msg.member.kick(`Luck was (not) on your side today. \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`);
+			msg.member.kick(`Luck was (not) on your side today. \n You can rejoin this server at this link: ${process.env.INV_LINK}`);
 		}, 5000);
 
 	} else {
@@ -307,7 +307,7 @@ async function embedHelper(embed, msg, user, ans) {
 				msg.channel.send(`https://tenor.com/view/cry-sad-toy-story-woody-so-long-partner-gif-9797730`);
 				if (!role) {
 					setTimeout(() => {
-						msg.member.kick(`Better luck next time, ${user} \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`);
+						msg.member.kick(`Better luck next time, ${user} \n You can rejoin this server at this link: ${process.env.INV_LINK}`);
 					}, 5000);
 				}
 
@@ -317,7 +317,7 @@ async function embedHelper(embed, msg, user, ans) {
 			msg.channel.send(`https://tenor.com/view/cry-sad-toy-story-woody-so-long-partner-gif-97977304`);
 			if (!role) {
 				setTimeout(() => {
-					msg.member.kick(`Better luck next time, ${user} \n You can rejoin this server at this link: https://discord.gg/jcX5hwFJbk`);
+					msg.member.kick(`Better luck next time, ${user} \n You can rejoin this server at this link: ${process.env.INV_LINK}`);
 				}, 5000);
 			}
 		});
