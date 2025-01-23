@@ -1,9 +1,15 @@
 {
-  "scripts": {
-    "start": "node code.js"
-  },
+  "name": "patchybeardsbot",
+  "type": "module",
   "dependencies": {
-    "discord.js": "^13.6.0",
-    "dotenv": "^15.0.0"
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
