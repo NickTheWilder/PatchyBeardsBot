@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"os/signal"
 	"strings"
@@ -36,7 +37,7 @@ func main() {
 	dg.AddHandler(messageCreate)
 
 	// we only care about receiving message events
-	dg.Identify.Intents = discordgo.IntentsGuildMessages
+	dg.Identify.Intents = discordgo.IntentsGuildMessages | discordgo.IntentsGuildMembers
 
 	// open a websocket connection to Discord and begin listening
 	err = dg.Open()
@@ -46,7 +47,7 @@ func main() {
 	}
 
 	// wait here until CTRL-C or other term signal is received
-	fmt.Println("Bot is now running. Press CTRL-C to exit.")
+	fmt.Println("Bot is now running.")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
@@ -66,5 +67,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.ToLower(m.Content) == "!ping" {
 		// send "Pong!" back to the channel
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
+	}
+
+	if strings.ToLower(m.Content) == "!roulette" {
+		// kick goes here
+		// we would need the id and a response for the message
+		ranNum := rand.Intn(5)
+		if ranNum == 1 {
+			s.ChannelMessageSend(m.ChannelID, "You win! Goodbye!")
+			err := s.GuildMemberDeleteWithReason(m.GuildID, m.Author.ID, "https://tenor.com/view/the-office-office-dwight-schrute-sniper-gif-25130487")
+			if err != nil {
+				fmt.Println("Error kicking member:", err)
+			}
+		} else {
+			s.ChannelMessageSend(m.ChannelID, "You're a loser. You get to stay another day.")
+		}
 	}
 }
