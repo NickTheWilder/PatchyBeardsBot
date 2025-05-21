@@ -69,8 +69,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.ToLower(m.Content) == "!roulette" {
 		ranNum := rand.Intn(5)
 		if ranNum == 1 {
-			s.ChannelMessageSend(m.ChannelID, "You win! Goodbye!")
-			err := s.GuildMemberDeleteWithReason(m.GuildID, m.Author.ID, "https://tenor.com/view/the-office-office-dwight-schrute-sniper-gif-25130487")
+			s.ChannelMessageSend(m.ChannelID, "https://tenor.com/view/the-office-office-dwight-schrute-sniper-gif-25130487")
+			err := s.GuildMemberDeleteWithReason(m.GuildID, m.Author.ID, "Lost roulette.")
 			if err != nil {
 				fmt.Println("Error kicking member:", err)
 			}
