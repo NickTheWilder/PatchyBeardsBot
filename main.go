@@ -56,22 +56,17 @@ func main() {
 	dg.Close()
 }
 
-// this function will be called every time a message is created
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// ignore all messages created by the bot itself
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
 
-	// check if the message is "!ping"
 	if strings.ToLower(m.Content) == "!ping" {
-		// send "Pong!" back to the channel
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
 	}
 
 	if strings.ToLower(m.Content) == "!roulette" {
-		// kick goes here
-		// we would need the id and a response for the message
 		ranNum := rand.Intn(5)
 		if ranNum == 1 {
 			s.ChannelMessageSend(m.ChannelID, "You win! Goodbye!")
